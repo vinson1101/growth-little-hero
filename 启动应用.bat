@@ -6,8 +6,8 @@ if not exist "node_modules\" (
     call npm install
 )
 
-echo Starting web server...
-start cmd /c "npm run dev"
+echo Starting web server in background...
+start /B cmd /c "npm run dev > nul 2>&1"
 
 ping 127.0.0.1 -n 6 > nul
 
@@ -21,4 +21,8 @@ echo ==========================================
 echo    App Started Successfully!
 echo ==========================================
 echo.
+echo Application is running in Chrome window
+echo Close this window to stop the server
+echo.
 pause
+taskkill /F /IM node.exe > nul 2>&1
