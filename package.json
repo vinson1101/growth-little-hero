@@ -2,6 +2,8 @@
   "name": "growth-little-hero",
   "private": true,
   "version": "1.0.0",
+  "description": "成长小英雄 - 一个基于React和Electron的个人成长管理应用",
+  "author": "vinson1101",
   "main": "electron.js",
   "scripts": {
     "dev": "vite",
@@ -9,26 +11,29 @@
     "preview": "vite preview",
     "electron:dev": "NODE_ENV=development electron .",
     "electron:build": "vite build && electron-builder",
-    "electron:pack": "vite build && electron-builder --dir"
+    "electron:pack": "vite build && electron-builder --dir",
+    "package": "vite build && electron-packager . 成长小英雄 --platform=win32 --arch=x64 --out=release --overwrite"
   },
   "dependencies": {
+    "lucide-react": "^0.561.0",
     "react": "^19.2.3",
-    "react-dom": "^19.2.3",
-    "lucide-react": "^0.561.0"
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.0",
     "electron": "^34.0.0",
-    "electron-builder": "^25.1.8"
+    "electron-builder": "^25.1.8",
+    "electron-packager": "^17.1.2",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
   },
   "build": {
     "appId": "com.growth-hero.app",
     "productName": "成长小英雄",
     "directories": {
-      "output": "release"
+      "output": "release",
+      "buildResources": "assets"
     },
     "files": [
       "dist/**/*",
@@ -37,19 +42,12 @@
     "win": {
       "target": [
         {
-          "target": "nsis",
-          "arch": ["x64"]
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
         }
       ]
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "installerIcon": "assets/icon.ico",
-      "uninstallerIcon": "assets/icon.ico",
-      "installerHeaderIcon": "assets/icon.ico",
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
     }
   }
 }
