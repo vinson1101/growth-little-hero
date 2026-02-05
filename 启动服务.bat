@@ -1,10 +1,10 @@
 @echo off
 chcp 65001 >nul
-title 成长小英雄 - 本地服务
+title 成长小英雄
 
 echo.
 echo ======================================
-echo    成长小英雄 - 本地服务启动
+echo       成长小英雄 - 启动程序
 echo ======================================
 echo.
 
@@ -18,26 +18,39 @@ if not exist "node_modules\" (
     echo.
 )
 
-REM 检查端口是否被占用
-echo [检查] 检查端口 3000 是否可用...
-netstat -ano | findstr :3000 >nul
-if %errorlevel% == 0 (
-    echo.
-    echo [警告] 端口 3000 已被占用！
-    echo 请检查是否已有服务在运行，或修改 vite.config.ts 中的端口号
-    echo.
-    pause
-    exit /b 1
-)
+echo [模式选择]
+echo.
+echo  1. 网页模式 - 在浏览器中打开（需要先启动开发服务器）
+echo  2. 桌面应用 - 独立窗口运行
+echo.
+set /p choice="请选择模式 (1/2，默认2): "
 
+if "%choice%"=="1" goto WEB_MODE
+if "%choice%"=="2" goto ELECTRON_MODE
+goto ELECTRON_MODE
+
+:WEB_MODE
+echo.
 echo [启动] 正在启动开发服务器...
 echo.
-echo ======================================
-echo  服务地址：http://localhost:3000
-echo  按 Ctrl+C 可以停止服务
-echo ======================================
+start cmd /k "npm run dev"
+timeout /t 3 >nul
+start http://localhost:3000
+goto END
+
+:ELECTRON_MODE
 echo.
+echo [启动] 正在启动桌面应用...
+echo.
+echo 提示：首次运行会自动打开Vite开发服务器
+echo.
+start /B cmd /c "npm run dev"
+timeout /t 5 >nul
+start npm run electron:dev
+goto END
 
-call npm run dev
-
+:END
+echo.
+echo [完成] 程序已启动！
+echo.
 pause
